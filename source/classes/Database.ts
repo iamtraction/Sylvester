@@ -38,6 +38,21 @@ class Database {
                 allowNull: false,
                 unique: "member",
             },
+            wins: {
+                type: sequelize.TEXT,
+                allowNull: false,
+                defaultValue: '0',
+            },
+            losses: {
+                type: sequelize.TEXT,
+                allowNull: false,
+                defaultValue: '0',
+            },
+            draws: {
+                type: sequelize.TEXT,
+                allowNull: false,
+                defaultValue: '0',
+            },
             sylvesterCoins: {
                 type: sequelize.TEXT,
                 allowNull: false,
