@@ -14,7 +14,7 @@ class Database {
     }
 
     private model() {
-        this.database.define("guild", {
+        const Guild: any = this.database.define("guild", {
             guildID: {
                 type: sequelize.STRING,
                 allowNull: false,
@@ -27,7 +27,7 @@ class Database {
             },
         });
 
-        this.database.define("member", {
+        const Member = this.database.define("member", {
             userID: {
                 type: sequelize.STRING,
                 allowNull: false,
@@ -53,6 +53,12 @@ class Database {
                 allowNull: false,
                 defaultValue: '0',
             },
+        });
+
+        Guild.hasMany(Member, {
+            foreignKey: 'guildID',
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE'
         });
 
         this.database.sync();
