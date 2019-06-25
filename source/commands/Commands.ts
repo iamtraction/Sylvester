@@ -17,9 +17,6 @@ class Commands extends Command {
         message.channel.send({
             embed: {
                 color: 15547712,
-                avatar: {
-                    icon_url: this.client.user.avatarURL,
-                },
                 title: "Sylvester Commands",
                 description: "Commands you can use with Sylvester.",
                 fields: commands,
