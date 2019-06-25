@@ -1,4 +1,4 @@
-all: deps build
+all: run
 
 build:
 	@echo "Cleaning transpiled files..."
@@ -11,6 +11,12 @@ deps:
 	@echo "Reinstalling dependencies..."
 	@rm -rf yarn.lock package-json.lock node_modules
 	@yarn install
+
+init:
+	@echo "Initializing Sylvester..."
+	@cp ./settings/{configurations,credentials}.example.yaml ./settings/{configurations,credentials}.yaml
+
+	deps
 
 run:
 	@yarn start
