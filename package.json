@@ -1,0 +1,22 @@
+{
+  "name": "sylvester",
+  "version": "1.0.0",
+  "description": "A Cat battle RPG game bot for Discord.",
+  "main": "./sylvester.js",
+  "repository": "https://github.com/k3rn31p4nic/Cattery.git",
+  "author": "Sankarsan Kampa",
+  "license": "GPL-3.0",
+  "private": true,
+  "dependencies": {
+    "tesseract": "https://github.com/TheBastionBot/Tesseract#v1",
+    "typescript": "^3.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.10"
+  },
+  "scripts": {
+    "prestart": "npm run transpile",
+    "start": "node .",
+    "transpile": "./node_modules/.bin/tsc"
+  }
+}
