@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A Cat battle RPG game bot for Discord.",
   "main": "./sylvester.js",
-  "repository": "https://github.com/k3rn31p4nic/Cattery.git",
+  "repository": "https://github.com/k3rn31p4nic/Sylvester.git",
   "author": "Sankarsan Kampa",
   "license": "GPL-3.0",
   "private": true,
