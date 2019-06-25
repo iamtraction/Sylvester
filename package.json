@@ -8,6 +8,8 @@
   "license": "GPL-3.0",
   "private": true,
   "dependencies": {
+    "sequelize": "^5.8.12",
+    "sqlite3": "^4.0.9",
     "tesseract": "https://github.com/TheBastionBot/Tesseract#v1",
     "typescript": "^3.5.2"
   },
