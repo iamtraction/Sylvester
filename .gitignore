@@ -64,10 +64,12 @@ typings/
 package-json.lock
 yarn.lock
 
-# Tesseract files
+# Tesseract & Sylvester files/data
+/classes/
 /listeners/
 /commands/
 /settings/*
 !/settings/*.example.yaml
+/data/sylvester.db
 sylvester.js
 sylvester.js.map
