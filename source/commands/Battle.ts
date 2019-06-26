@@ -2,8 +2,21 @@ import { Command } from "tesseract";
 import { Message, Snowflake, TextChannel } from "discord.js";
 
 interface IBattle {
+    message: Snowflake;
     initiator: Snowflake;
     contender: Snowflake;
+    probabilities: {
+        initiator: number;
+        contender: number;
+    },
+    cumulativeProbabilities: {
+        initiator: number;
+        contender: number;
+    },
+    HP?: {
+        initiator: number;
+        contender: number;
+    },
 }
 
 interface BattleChannel extends TextChannel {
@@ -14,7 +27,7 @@ class Battle extends Command {
     constructor() {
         super("battle");
 
-        this.description = "Shows you the available commands of Sylvester.";
+        this.description = "Starts a showdown request in the channel. If someone accepts it, you start a battle.";
     }
 
     public async exec(message: Message): Promise<any> {
@@ -26,22 +39,69 @@ class Battle extends Command {
 
             battleChannel.battle.contender = message.author.id;
 
-            let winner = await this.battle(battleChannel);
 
-            message.channel.send({
+            await this.calculateProbability(battleChannel);
+
+
+            let initiator = message.guild.members.get(battleChannel.battle.initiator);
+            let contender = message.guild.members.get(battleChannel.battle.initiator);
+
+
+            await message.channel.send({
                 embed: {
                     color: 15547712,
-                    title: ":confetti_ball: Congratulations :confetti_ball:",
-                    description: `<@${winner}> wins the showdown!`,
+                    title: "Showdown",
+                    description: `**${contender.displayName}** accepted the challenge from **${initiator.displayName}**!`,
                     thumbnail: {
-                        url: `https://robohash.org/${winner}?set=set4`,
+                        url: `https://robohash.org/${contender.id}?set=set4`,
+                    },
+                    footer: {
+                        text: "Showdown will start in a few seconds!"
                     },
                 },
             });
+
+
+            battleChannel.battle.HP = {
+                initiator: 100,
+                contender: 100,
+            };
+
+
+            let battleMessage = await message.channel.send(`${initiator} **VS** ${contender}`, {
+                embed: {
+                    color: 15547712,
+                    title: "Let the battle begin!",
+                    fields: [
+                        {
+                            name: initiator.displayName,
+                            value: `${battleChannel.battle.HP.initiator} **HP**`,
+                        },
+                        {
+                            name: contender.displayName,
+                            value: `${battleChannel.battle.HP.contender} **HP**`,
+                        },
+                    ],
+                    footer: {
+                        text: "Use the !attack command to attack your opponent.",
+                    }
+                }
+            }) as Message;
+
+            battleChannel.battle.message = battleMessage.id;
         } else {
             battleChannel.battle = {
+                message: null,
                 initiator: message.author.id,
                 contender: null,
+                probabilities: {
+                    initiator: 0,
+                    contender: 0,
+                },
+                cumulativeProbabilities: {
+                    initiator: 0,
+                    contender: 0,
+                },
             };
 
             message.channel.send({
@@ -57,7 +117,7 @@ class Battle extends Command {
         }
     }
 
-    private async battle(battleChannel: BattleChannel): Promise<Snowflake> {
+    private async calculateProbability(battleChannel: BattleChannel): Promise<void> {
         let initiatorDoc = await this.client.database.models.member.findOne({
             where: {
                 userID: battleChannel.battle.initiator,
@@ -79,36 +139,23 @@ class Battle extends Command {
         contenderDoc.dataValues.level = parseInt(contenderDoc.dataValues.level);
 
 
-        let winningProbability = {
+        battleChannel.battle.probabilities = {
             initiator: 0,
             contender: 0,
         };
 
         if (initiatorDoc.dataValues.level === contenderDoc.dataValues.level) {
-            winningProbability.initiator = initiatorDoc.dataValues.experiencePoints / (initiatorDoc.dataValues.experiencePoints + contenderDoc.dataValues.experiencePoints);
-            winningProbability.contender = contenderDoc.dataValues.experiencePoints / (initiatorDoc.dataValues.experiencePoints + contenderDoc.dataValues.experiencePoints);
+            battleChannel.battle.probabilities.initiator = initiatorDoc.dataValues.experiencePoints / (initiatorDoc.dataValues.experiencePoints + contenderDoc.dataValues.experiencePoints);
+            battleChannel.battle.probabilities.contender = contenderDoc.dataValues.experiencePoints / (initiatorDoc.dataValues.experiencePoints + contenderDoc.dataValues.experiencePoints);
         } else {
-            winningProbability.initiator = initiatorDoc.dataValues.level / (initiatorDoc.dataValues.level + contenderDoc.dataValues.level);
-            winningProbability.contender = contenderDoc.dataValues.level / (initiatorDoc.dataValues.level + contenderDoc.dataValues.level);
+            battleChannel.battle.probabilities.initiator = initiatorDoc.dataValues.level / (initiatorDoc.dataValues.level + contenderDoc.dataValues.level);
+            battleChannel.battle.probabilities.contender = contenderDoc.dataValues.level / (initiatorDoc.dataValues.level + contenderDoc.dataValues.level);
         }
 
-        let winningCumulativeProbability = {
-            initiator: winningProbability.initiator,
-            contender: winningProbability.initiator + winningProbability.contender,
+        battleChannel.battle.cumulativeProbabilities = {
+            initiator: battleChannel.battle.probabilities.initiator,
+            contender: battleChannel.battle.probabilities.initiator + battleChannel.battle.probabilities.contender,
         };
-
-
-        let magicNumber: number = Math.random();
-
-        let winner: Snowflake = null;
-        if (magicNumber < winningCumulativeProbability.initiator) {
-            winner = battleChannel.battle.initiator;
-        } else if (magicNumber < winningCumulativeProbability.contender) {
-            winner = battleChannel.battle.initiator;
-        }
-
-
-        return winner;
     }
 }
 
