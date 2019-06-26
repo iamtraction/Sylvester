@@ -20,6 +20,9 @@ class Commands extends Command {
                 title: "Sylvester Commands",
                 description: "Commands you can use with Sylvester.",
                 fields: commands,
+                thumbnail: {
+                    url: this.client.user.avatarURL,
+                },
             },
         });
     }
