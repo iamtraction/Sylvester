@@ -154,9 +154,6 @@ class Battle extends Command {
             },
         });
         let contenderDoc = await this.client.database.models.member.findOne({
-            userID: battleChannel.battle.contender,
-            guildID: battleChannel.guild.id,
-        }, {
             where: {
                 userID: battleChannel.battle.contender,
                 guildID: battleChannel.guild.id,
