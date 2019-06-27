@@ -8,13 +8,15 @@ build:
 	@yarn transpile
 
 deps:
-	@echo "Reinstalling dependencies..."
+	@echo "Installing dependencies..."
 	@rm -rf yarn.lock package-json.lock node_modules
 	@yarn install
 
 init:
 	@echo "Initializing Sylvester..."
-	@cp ./settings/{configurations,credentials}.example.yaml ./settings/{configurations,credentials}.yaml
+	@cp ./settings/configurations.example.yaml ./settings/configurations.yaml
+	@cp ./settings/credentials.example.yaml ./settings/credentials.yaml
+	@mkdir data
 
 	deps
 
