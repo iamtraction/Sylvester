@@ -24,13 +24,19 @@ interface BattleChannel extends TextChannel {
 }
 
 class Attack extends Command {
+    recentAttackers: Snowflake[];
+
     constructor() {
         super("attack");
 
-        this.description = "When you're in showdown, attack your opponent using this command.";
+        this.recentAttackers = [];
+
+        this.description = "When you're in showdown, attack your opponent using this command. You can attack only once every 5 seconds.";
     }
 
     public async exec(message: Message): Promise<any> {
+        if (this.recentAttackers.includes(message.author.id)) return;
+
         let battleChannel = message.channel as BattleChannel;
 
         if (!battleChannel.battle || !battleChannel.battle.HP) return;
@@ -63,6 +69,10 @@ class Attack extends Command {
 
         let initiator = message.guild.members.get(battleChannel.battle.initiator);
         let contender = message.guild.members.get(battleChannel.battle.contender);
+
+
+        this.recentAttackers.push(message.author.id);
+        this.client.setTimeout(() => this.recentAttackers.splice(this.recentAttackers.indexOf(message.author.id), 1), 5000);
 
 
         // IDEA: Don't delete old message in case players want to see their battle history.
