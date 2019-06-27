@@ -13,3 +13,9 @@
 [![Sylvester's Website](https://imgur.com/Ee0OjkV.png)](https://sylvester.traction.one 'Visit Sylvester\'s Website')
 
 </div>
+
+<div align="center">
+
+[![Bastion](https://imgur.com/bYkNntU.png)](https://bastionbot.org 'The Bastion Bot Project')
+
+</div>
