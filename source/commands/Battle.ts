@@ -83,7 +83,7 @@ class Battle extends Command {
                         },
                     ],
                     footer: {
-                        text: "Use the !attack command to attack your opponent.",
+                        text: "Use the !attack command to attack your opponent and the !heal command to heal yourself.",
                     },
                 }
             }) as Message;
