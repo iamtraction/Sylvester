@@ -91,18 +91,17 @@ class Attack extends Command {
             let battleMessage = await message.channel.send({
                 embed: {
                     color: 15547712,
-                    author: {
-                        name: `${initiator.displayName} VS ${contender.displayName}`
-                    },
                     title: "Showdown",
                     fields: [
                         {
                             name: initiator.displayName,
-                            value: `${battleChannel.battle.HP.initiator} **HP**`,
+                            value: " :heart: ".repeat(battleChannel.battle.HP.initiator / 10)
+                                + " :black_heart: ".repeat(10 - battleChannel.battle.HP.initiator / 10),
                         },
                         {
                             name: contender.displayName,
-                            value: `${battleChannel.battle.HP.contender} **HP**`,
+                            value: " :heart: ".repeat(battleChannel.battle.HP.contender / 10)
+                                + " :black_heart: ".repeat(10 - battleChannel.battle.HP.contender / 10),
                         },
                     ],
                     footer: {

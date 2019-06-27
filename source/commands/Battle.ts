@@ -75,16 +75,16 @@ class Battle extends Command {
                     fields: [
                         {
                             name: initiator.displayName,
-                            value: `${battleChannel.battle.HP.initiator} **HP**`,
+                            value: " :heart: ".repeat(battleChannel.battle.HP.initiator / 10),
                         },
                         {
                             name: contender.displayName,
-                            value: `${battleChannel.battle.HP.contender} **HP**`,
+                            value: " :heart: ".repeat(battleChannel.battle.HP.contender / 10),
                         },
                     ],
                     footer: {
                         text: "Use the !attack command to attack your opponent.",
-                    }
+                    },
                 }
             }) as Message;
 
