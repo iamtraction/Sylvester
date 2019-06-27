@@ -118,6 +118,15 @@ class Battle extends Command {
     }
 
     private async calculateProbability(battleChannel: BattleChannel): Promise<void> {
+        await this.client.database.models.member.upsert({
+            userID: battleChannel.battle.initiator,
+            guildID: battleChannel.guild.id,
+        }, {
+            where: {
+                userID: battleChannel.battle.initiator,
+                guildID: battleChannel.guild.id,
+            },
+        });
         let initiatorDoc = await this.client.database.models.member.findOne({
             where: {
                 userID: battleChannel.battle.initiator,
@@ -125,7 +134,19 @@ class Battle extends Command {
             },
         });
 
+        await this.client.database.models.member.upsert({
+            userID: battleChannel.battle.contender,
+            guildID: battleChannel.guild.id,
+        }, {
+            where: {
+                userID: battleChannel.battle.contender,
+                guildID: battleChannel.guild.id,
+            },
+        });
         let contenderDoc = await this.client.database.models.member.findOne({
+            userID: battleChannel.battle.contender,
+            guildID: battleChannel.guild.id,
+        }, {
             where: {
                 userID: battleChannel.battle.contender,
                 guildID: battleChannel.guild.id,
