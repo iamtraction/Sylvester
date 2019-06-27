@@ -40,11 +40,11 @@ class Profile extends Command {
                         value: memberDoc.dataValues.losses,
                         inline: true,
                     },
-                    {
-                        name: "Draws",
-                        value: memberDoc.dataValues.draws,
-                        inline: true,
-                    },
+                    // {
+                    //     name: "Draws",
+                    //     value: memberDoc.dataValues.draws,
+                    //     inline: true,
+                    // },
                     {
                         name: "Level",
                         value: memberDoc.dataValues.level,
@@ -55,11 +55,11 @@ class Profile extends Command {
                         value: memberDoc.dataValues.experiencePoints,
                         inline: true,
                     },
-                    {
-                        name: "SylCoins",
-                        value: memberDoc.dataValues.sylvesterCoins,
-                        inline: true,
-                    },
+                    // {
+                    //     name: "SylCoins",
+                    //     value: memberDoc.dataValues.sylvesterCoins,
+                    //     inline: true,
+                    // },
                 ],
             },
         });
