@@ -1,5 +1,5 @@
 import { Command, Snowflake } from "tesseract";
-import { Message, TextChannel } from "discord.js";
+import { Message, TextChannel, GuildMember } from "discord.js";
 
 interface IBattle {
     message: Snowflake;
@@ -81,7 +81,15 @@ class Attack extends Command {
 
 
         if (!battleChannel.battle.HP.initiator || !battleChannel.battle.HP.contender) {
-            let winner = battleChannel.battle.HP.initiator > battleChannel.battle.HP.contender ? initiator : contender;
+            let winner: GuildMember, loser: GuildMember;
+
+            if (battleChannel.battle.HP.initiator > battleChannel.battle.HP.contender) {
+                winner = initiator;
+                loser = contender;
+            } else {
+                winner = contender;
+                loser = initiator;
+            }
 
             await message.channel.send({
                 embed: {
@@ -96,6 +104,8 @@ class Attack extends Command {
                     },
                 }
             });
+
+            await this.updateStats(winner, loser);
 
             delete battleChannel.battle;
         } else {
@@ -123,6 +133,46 @@ class Attack extends Command {
 
             battleChannel.battle.message = battleMessage.id;
         }
+    }
+
+    private async updateStats(winner: GuildMember, loser: GuildMember) {
+        let winnerDoc = await this.client.database.models.member.findOne({
+            where: {
+                userID: winner.id,
+                guildID: winner.guild.id,
+            },
+        });
+
+        await this.client.database.models.member.update({
+            wins: parseInt(winnerDoc.dataValues.wins) + 1,
+            experiencePoints: parseInt(winnerDoc.dataValues.experiencePoints) + 100,
+            sylvesterCoins: parseInt(winnerDoc.dataValues.sylvesterCoins) + 50,
+        }, {
+            where: {
+                userID: winner.id,
+                guildID: winner.guild.id,
+            },
+            fields: [ 'wins', 'sylvesterCoins', 'experiencePoints' ]
+        });
+
+
+        let loserDoc = await this.client.database.models.member.findOne({
+            where: {
+                userID: loser.id,
+                guildID: loser.guild.id,
+            },
+        });
+
+        await this.client.database.models.member.update({
+            losses: parseInt(loserDoc.dataValues.losses) + 1,
+            experiencePoints: parseInt(loserDoc.dataValues.experiencePoints) + 50,
+        }, {
+            where: {
+                userID: loser.id,
+                guildID: loser.guild.id,
+            },
+            fields: [ 'losses', 'experiencePoints' ]
+        });
     }
 }
 
