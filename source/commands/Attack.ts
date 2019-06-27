@@ -65,8 +65,9 @@ class Attack extends Command {
         let contender = message.guild.members.get(battleChannel.battle.contender);
 
 
-        let oldBattleMessage = message.channel.messages.get(battleChannel.battle.message);
-        await oldBattleMessage.delete();
+        // IDEA: Don't delete old message in case players want to see their battle history.
+        // let oldBattleMessage = message.channel.messages.get(battleChannel.battle.message);
+        // await oldBattleMessage.delete();
 
 
         if (!battleChannel.battle.HP.initiator || !battleChannel.battle.HP.contender) {
