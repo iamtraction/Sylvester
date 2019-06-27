@@ -31,6 +31,16 @@ class Battle extends Command {
     }
 
     public async exec(message: Message): Promise<any> {
+        let guildDoc = await this.client.database.models.guild.findOne({
+            where: {
+                guildID: message.guild.id,
+                enabled: true,
+            },
+        });
+
+        if (!guildDoc) return;
+
+
         let battleChannel = message.channel as BattleChannel;
 
         if (battleChannel.battle && battleChannel.battle.initiator) {
