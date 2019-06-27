@@ -44,7 +44,7 @@ class Battle extends Command {
 
 
             let initiator = message.guild.members.get(battleChannel.battle.initiator);
-            let contender = message.guild.members.get(battleChannel.battle.initiator);
+            let contender = message.guild.members.get(battleChannel.battle.contender);
 
 
             await message.channel.send({
