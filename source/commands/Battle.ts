@@ -119,6 +119,18 @@ class Battle extends Command {
                     color: 15547712,
                     title: "Showdown",
                     description: `**${message.member.displayName}** is challenging you to a showdown! To accept the challenge, use the \`${this.client.configurations.prefixes[0]}battle\` command.`,
+                    fields: [
+                        {
+                            name: "Guidelines",
+                            value: `**#1** You can use \`${this.client.configurations.prefixes[0]}attack\` to attack your opponents every 5 seconds. Users in higher level with more XP have higher chance of their attacks being successful.\n\n`
+                                + `**#2** You can use \`${this.client.configurations.prefixes[0]}heal\` to heal yourself every 15 seconds.\n\n`
+                                + `**#3** You'll get 50 XP for participating in the game and completing it to the end. And you'll get another extra 50 XP if you win.\n\n`,
+                        },
+                        {
+                            name: "Accept Challenge",
+                            value: `To accept the challenge and start battling, use the \`${this.client.configurations.prefixes[0]}battle\` command.`,
+                        },
+                    ],
                     thumbnail: {
                         url: `https://robohash.org/${message.author.id}?set=set4`,
                     },
